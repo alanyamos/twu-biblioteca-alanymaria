@@ -23,7 +23,7 @@ public class Biblioteca {
         printStream.println(welcomeMessage);
     }
 
-    public void menu() {
+    public void displayMenu() {
         String menu = constants.menu;
         printStream.println(menu);
         String option = readLine();
@@ -32,10 +32,14 @@ public class Biblioteca {
             case 1:
                 listAllBooks();
                 break;
+            case 2:
+                System.exit(0);
             default:
                 printInvalidOptionMessage();
                 break;
         }
+
+        displayMenu();
     }
 
 

@@ -43,7 +43,7 @@ public class BibliotecaTest {
     public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() throws IOException {
         String expectedListOfBooks = mocks.expectedListOfBooks;
         when(bufferedReader.readLine()).thenReturn("1");
-        biblioteca.menu();
+        biblioteca.displayMenu();
         verify(printStream).println(expectedListOfBooks);
     }
 
@@ -52,7 +52,7 @@ public class BibliotecaTest {
         String expectedInvalidOptionMessage = mocks.expectedInvalidOptionMessage;
         String invalidOption = mocks.invalidOption;
         when(bufferedReader.readLine()).thenReturn(invalidOption);
-        biblioteca.menu();
+        biblioteca.displayMenu();
         verify(printStream).println(expectedInvalidOptionMessage);
     }
 }

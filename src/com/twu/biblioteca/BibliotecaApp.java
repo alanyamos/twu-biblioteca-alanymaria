@@ -11,7 +11,7 @@ public class BibliotecaApp {
         List<Book> books = booksSetUp();
         Biblioteca biblioteca = new Biblioteca(System.out, books, new BufferedReader(new InputStreamReader(System.in)));
         biblioteca.printWelcomeMessage();
-        biblioteca.menu();
+        biblioteca.displayMenu();
     }
 
     private static List<Book> booksSetUp() {
