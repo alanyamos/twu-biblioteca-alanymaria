@@ -46,5 +46,14 @@ public class BibliotecaTest {
         biblioteca.menu();
         verify(printStream).println(expectedListOfBooks);
     }
+
+    @Test
+    public void shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu() throws IOException {
+        String expectedInvalidOptionMessage = mocks.expectedInvalidOptionMessage;
+        String invalidOption = mocks.invalidOption;
+        when(bufferedReader.readLine()).thenReturn(invalidOption);
+        biblioteca.menu();
+        verify(printStream).println(expectedInvalidOptionMessage);
+    }
 }
 

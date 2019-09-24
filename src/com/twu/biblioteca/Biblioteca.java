@@ -3,9 +3,7 @@ package com.twu.biblioteca;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Biblioteca {
 
@@ -35,6 +33,7 @@ public class Biblioteca {
                 listAllBooks();
                 break;
             default:
+                printInvalidOptionMessage();
                 break;
         }
     }
@@ -48,6 +47,11 @@ public class Biblioteca {
         }
 
         printStream.println(listOfBooks);
+    }
+
+    private void printInvalidOptionMessage() {
+        String invalidOptionMessage = constants.invalidOptionMessage;
+        printStream.println(invalidOptionMessage);
     }
 
     private String readLine() {
