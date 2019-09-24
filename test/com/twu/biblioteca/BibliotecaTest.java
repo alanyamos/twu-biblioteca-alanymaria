@@ -37,9 +37,9 @@ public class BibliotecaTest {
     public void shouldPrintAListOfAllBooksAfterWelcomeMessage() {
         String expectedListOfBooks = mocks.expectedListOfBooks;
 
-        books.add(new Book("Book Title 1"));
-        books.add(new Book("Book Title 2"));
-        books.add(new Book("Book Title 3"));
+        books.add(new Book("Book Title 1", "0000", "Author 1"));
+        books.add(new Book("Book Title 2", "0000", "Author 2"));
+        books.add(new Book("Book Title 3", "0000", "Author 3"));
 
         biblioteca.listAllBooks();
         verify(printStream).println(expectedListOfBooks);

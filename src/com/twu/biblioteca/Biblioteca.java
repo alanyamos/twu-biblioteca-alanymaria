@@ -23,7 +23,7 @@ public class Biblioteca {
         String listOfBooks =  "";
 
         for (Book book : books) {
-            listOfBooks += book.getName() + "\n";
+            listOfBooks += "Title: " + book.getTitle() + "\nAuthor: " + book.getAuthor() + "\nYear published: " + book.getYearPublished() + "\n--------------------\n\n";
         }
 
         printStream.println(listOfBooks);
