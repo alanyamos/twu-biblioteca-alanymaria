@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/biblioteca.iml" filepath="$PROJECT_DIR$/biblioteca.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.iml" filepath="$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.main.iml" filepath="$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.test.iml" filepath="$PROJECT_DIR$/.idea/modules/twu-biblioteca-alanymaria.test.iml" />
     </modules>
   </component>
 </project>
-
