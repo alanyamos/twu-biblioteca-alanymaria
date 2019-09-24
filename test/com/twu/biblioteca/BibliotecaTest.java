@@ -4,16 +4,18 @@ package com.twu.biblioteca;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class BibliotecaTest {
 
     private PrintStream printStream;
+    private BufferedReader bufferedReader;
     private Biblioteca biblioteca;
     private List<Book> books;
     private Mocks mocks;
@@ -21,8 +23,12 @@ public class BibliotecaTest {
     @Before
     public void setUp() {
         printStream = mock(PrintStream.class);
+        bufferedReader = mock(BufferedReader.class);
         books = new ArrayList<Book>();
-        biblioteca = new Biblioteca(printStream, books);
+        books.add(new Book("Book Title 1", "0000", "Author 1"));
+        books.add(new Book("Book Title 2", "0000", "Author 2"));
+        books.add(new Book("Book Title 3", "0000", "Author 3"));
+        biblioteca = new Biblioteca(printStream, books, bufferedReader);
         mocks = new Mocks();
     }
 
@@ -34,14 +40,10 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldPrintAListOfAllBooksAfterWelcomeMessage() {
+    public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() throws IOException {
         String expectedListOfBooks = mocks.expectedListOfBooks;
-
-        books.add(new Book("Book Title 1", "0000", "Author 1"));
-        books.add(new Book("Book Title 2", "0000", "Author 2"));
-        books.add(new Book("Book Title 3", "0000", "Author 3"));
-
-        biblioteca.listAllBooks();
+        when(bufferedReader.readLine()).thenReturn("1");
+        biblioteca.menu();
         verify(printStream).println(expectedListOfBooks);
     }
 }
