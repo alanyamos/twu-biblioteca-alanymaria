@@ -9,9 +9,15 @@ public class BibliotecaApp {
 
     public static void main(String[] args) {
         List<Book> books = booksSetUp();
+        Constants constants = new Constants();
         Biblioteca biblioteca = new Biblioteca(System.out, books, new BufferedReader(new InputStreamReader(System.in)));
-        biblioteca.printWelcomeMessage();
-        biblioteca.displayMenu();
+        biblioteca.factory();
+        biblioteca.welcomeMessage();
+        String option = "";
+        while (option != constants.exitOption) {
+            option = biblioteca.displayMenu();
+            biblioteca.optionHandler(option);
+        }
     }
 
     private static List<Book> booksSetUp() {

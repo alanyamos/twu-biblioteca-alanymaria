@@ -10,6 +10,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
 public class BibliotecaTest {
@@ -35,24 +37,31 @@ public class BibliotecaTest {
     @Test
     public void shouldPrintAWelcomeMessageWhenApplicationStarts() {
         String expectedMessage = mocks.expectedMessage;
-        biblioteca.printWelcomeMessage();
+        biblioteca.welcomeMessage();
         verify(printStream).println(expectedMessage);
     }
 
     @Test
-    public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() throws IOException {
-        String expectedListOfBooks = mocks.expectedListOfBooks;
+    public void shouldReturnOneWhenOptionOneIsChosenFromMenu() throws IOException {
         when(bufferedReader.readLine()).thenReturn("1");
-        biblioteca.displayMenu();
+        String option = biblioteca.displayMenu();
+        assertThat(option, is("1"));
+    }
+
+    @Test
+    public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() {
+        String expectedListOfBooks = mocks.expectedListOfBooks;
+        biblioteca.factory();
+        biblioteca.optionHandler( "1");
         verify(printStream).println(expectedListOfBooks);
     }
 
     @Test
-    public void shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu() throws IOException {
+    public void shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu() {
         String expectedInvalidOptionMessage = mocks.expectedInvalidOptionMessage;
         String invalidOption = mocks.invalidOption;
-        when(bufferedReader.readLine()).thenReturn(invalidOption);
-        biblioteca.displayMenu();
+        biblioteca.factory();
+        biblioteca.optionHandler(invalidOption);
         verify(printStream).println(expectedInvalidOptionMessage);
     }
 }

@@ -3,13 +3,20 @@ package com.twu.biblioteca;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+interface Command {
+    void runCommand();
+}
 
 public class Biblioteca {
 
     private PrintStream printStream;
     private BufferedReader bufferedReader;
     private List<Book> books;
+    private Map<String, Command> options = new HashMap<String, Command>();
     private Constants constants = new Constants();
 
     public Biblioteca(PrintStream printStream, List<Book> books, BufferedReader bufferedReader) {
@@ -18,32 +25,40 @@ public class Biblioteca {
         this.bufferedReader = bufferedReader;
     }
 
-    public void printWelcomeMessage() {
+    public void welcomeMessage() {
         String welcomeMessage = constants.welcomeMessage;
         printStream.println(welcomeMessage);
     }
 
-    public void displayMenu() {
+    public String displayMenu() {
         String menu = constants.menu;
         printStream.println(menu);
         String option = readLine();
 
-        switch (Integer.parseInt(option)) {
-            case 1:
-                listAllBooks();
-                break;
-            case 2:
-                System.exit(0);
-            default:
-                printInvalidOptionMessage();
-                break;
-        }
+        return option;
+    }
 
-        displayMenu();
+    public void factory() {
+        options.put("1", new Command() {
+            public void runCommand() { listBooks(); };
+        });
+
+        options.put("2", new Command() {
+            public void runCommand() { exit(); };
+        });
+    }
+
+    public void optionHandler(String option) {
+        try {
+            options.get(option).runCommand();
+        } catch (Exception error) {
+            String invalidOptionMessage = constants.invalidOptionMessage;
+            printStream.println(invalidOptionMessage);
+        }
     }
 
 
-    public void listAllBooks() {
+    private void listBooks() {
         String listOfBooks =  "";
 
         for (Book book : books) {
@@ -53,9 +68,8 @@ public class Biblioteca {
         printStream.println(listOfBooks);
     }
 
-    private void printInvalidOptionMessage() {
-        String invalidOptionMessage = constants.invalidOptionMessage;
-        printStream.println(invalidOptionMessage);
+    private void exit() {
+        System.exit(0);
     }
 
     private String readLine() {
