@@ -90,7 +90,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BibliotecaApp">
+  <component name="RunManager" selected="JUnit.BibliotecaTest">
     <configuration name="BibliotecaApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.twu.biblioteca.BibliotecaApp" />
       <module name="biblioteca" />
@@ -119,7 +119,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BibliotecaTest.shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BibliotecaTest.shouldCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="biblioteca" />
       <extension name="coverage">
         <pattern>
@@ -129,7 +129,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.twu.biblioteca" />
       <option name="MAIN_CLASS_NAME" value="com.twu.biblioteca.BibliotecaTest" />
-      <option name="METHOD_NAME" value="shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu" />
+      <option name="METHOD_NAME" value="shouldCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsAvailable" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -169,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BibliotecaTest" />
         <item itemvalue="JUnit.BibliotecaTest.shouldReturnABookWhenOptionThreeIsChosenFromMenu" />
+        <item itemvalue="JUnit.BibliotecaTest.shouldCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsAvailable" />
+        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BibliotecaTest.shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu" />
-        <item itemvalue="JUnit.BibliotecaTest.shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu" />
       </list>
     </recent_temporary>
   </component>

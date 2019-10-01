@@ -64,12 +64,7 @@ public class BibliotecaTest {
     @Test
     public void shouldCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsAvailable() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 1");
-        Book book = null;
-        for (Book b : books) {
-            if (b.getTitle().equals("Book Title 1")) {
-                book = b;
-            }
-        }
+        Book book = books.stream().filter(b -> b.getTitle().equals("Book Title 1")).findFirst().get();
         biblioteca.optionHandler("2");
         assertThat(book.getStatus(), is("reserved"));
     }
@@ -86,18 +81,12 @@ public class BibliotecaTest {
         when(bufferedReader.readLine()).thenReturn("Book Title 4");
         biblioteca.optionHandler("2");
         verify(printStream).println("Sorry, that book is not available.\n");
-
     }
 
     @Test
     public void shouldReturnABookWhenOptionThreeIsChosenFromMenu() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 2");
-        Book book = null;
-        for (Book b : books) {
-            if (b.getTitle().equals("Book Title 2")) {
-                book = b;
-            }
-        }
+        Book book = books.stream().filter(b -> b.getTitle().equals("Book Title 2")).findFirst().get();
         biblioteca.optionHandler("3");
         assertThat(book.getStatus(), is("not reserved"));
     }

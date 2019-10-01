@@ -81,6 +81,7 @@ public class Biblioteca {
         printStream.println("Which book do you want to checkout?");
         String bookTitle = readLine();
         boolean failedCheckout = true;
+
         for (Book book : books) {
             if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isBookAvailable(book)) {
                 book.setStatus("reserved");
@@ -98,6 +99,7 @@ public class Biblioteca {
         printStream.println("Which book do you want to return?");
         String bookTitle = readLine();
         boolean failedReturn = true;
+
         for (Book book : books) {
             if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && !isBookAvailable(book)) {
                 book.setStatus("not reserved");
@@ -122,6 +124,7 @@ public class Biblioteca {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return option;
     }
 
