@@ -26,7 +26,7 @@ public class BibliotecaTest {
         bufferedReader = mock(BufferedReader.class);
         books = new ArrayList<Book>();
         books.add(new Book("Book Title 1", "0000", "Author 1", "not reserved"));
-        books.add(new Book("Book Title 2", "0000", "Author 2", "not reserved"));
+        books.add(new Book("Book Title 2", "0000", "Author 2", "reserved"));
         books.add(new Book("Book Title 3", "0000", "Author 3", "not reserved"));
         biblioteca = new Biblioteca(printStream, books, bufferedReader);
         biblioteca.factory();
@@ -47,7 +47,7 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() {
+    public void shouldPrintAListOfAvailableBooksWhenOptionOneIsChosenFromMenu() {
         String expectedListOfBooks = Mocks.expectedListOfBooks;
         biblioteca.optionHandler("1");
         verify(printStream).println(expectedListOfBooks);
@@ -87,9 +87,23 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndThereIsASpeelingError() throws IOException {
+    public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndThereIsASpellingError() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 4");
         biblioteca.optionHandler("2");
         verify(printStream).println("Sorry, that book is not available\n");
+
+    }
+
+    @Test
+    public void shouldReturnABookWhenOptionThreeIsChosenFromMenu() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 2");
+        Book book = null;
+        for (Book b : books) {
+            if (b.getTitle().equals("Book Title 2")) {
+                book = b;
+            }
+        }
+        biblioteca.optionHandler("3");
+        assertThat(book.getStatus(), is("not reserved"));
     }
 }

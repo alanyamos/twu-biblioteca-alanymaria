@@ -47,6 +47,10 @@ public class Biblioteca {
         });
 
         options.put("3", new Command() {
+            public void runCommand() { returnBook(); };
+        });
+
+        options.put("4", new Command() {
             public void runCommand() { exit(); };
         });
     }
@@ -87,6 +91,16 @@ public class Biblioteca {
 
         if (failedCheckout) {
             printStream.println("Sorry, that book is not available\n");
+        }
+    }
+
+    private void returnBook() {
+        printStream.println("Which book do you want to return?");
+        String bookTitle = readLine();
+        for (Book book : books) {
+            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle))) {
+                book.setStatus("not reserved");
+            }
         }
     }
 
