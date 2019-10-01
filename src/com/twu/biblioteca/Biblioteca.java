@@ -85,22 +85,29 @@ public class Biblioteca {
             if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isBookAvailable(book)) {
                 book.setStatus("reserved");
                 failedCheckout = false;
-                printStream.println("Thank you! Enjoy the book\n");
+                printStream.println("Thank you! Enjoy the book.\n");
             }
         }
 
         if (failedCheckout) {
-            printStream.println("Sorry, that book is not available\n");
+            printStream.println("Sorry, that book is not available.\n");
         }
     }
 
     private void returnBook() {
         printStream.println("Which book do you want to return?");
         String bookTitle = readLine();
+        boolean failedReturn = true;
         for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle))) {
+            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && !isBookAvailable(book)) {
                 book.setStatus("not reserved");
+                failedReturn = false;
+                printStream.println("Thank you for returning the book.\n");
             }
+        }
+
+        if (failedReturn) {
+            printStream.println("That is not a valid book to return.\n");
         }
     }
 

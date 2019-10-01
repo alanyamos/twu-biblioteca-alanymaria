@@ -76,21 +76,16 @@ public class BibliotecaTest {
 
     @Test
     public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsNotAvailable() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("Book Title 1");
-        for (Book book : books) {
-            if (book.getTitle().equals("Book Title 1")) {
-                book.setStatus("reserved");
-            }
-        }
+        when(bufferedReader.readLine()).thenReturn("Book Title 2");
         biblioteca.optionHandler("2");
-        verify(printStream).println("Sorry, that book is not available\n");
+        verify(printStream).println("Sorry, that book is not available.\n");
     }
 
     @Test
     public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndThereIsASpellingError() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 4");
         biblioteca.optionHandler("2");
-        verify(printStream).println("Sorry, that book is not available\n");
+        verify(printStream).println("Sorry, that book is not available.\n");
 
     }
 
@@ -105,5 +100,19 @@ public class BibliotecaTest {
         }
         biblioteca.optionHandler("3");
         assertThat(book.getStatus(), is("not reserved"));
+    }
+
+    @Test
+    public void shouldNotReturnABookWhenOptionThreeIsChosenFromMenuAndTheBookIsAlreadyAvailable() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 1");
+        biblioteca.optionHandler("3");
+        verify(printStream).println("That is not a valid book to return.\n");
+    }
+
+    @Test
+    public void shouldNotCheckoutABookWhenOptionThreeIsChosenFromMenuAndThereIsASpellingError() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 4");
+        biblioteca.optionHandler("3");
+        verify(printStream).println("That is not a valid book to return.\n");
     }
 }
