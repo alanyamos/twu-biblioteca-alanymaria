@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,23 +19,22 @@ public class BibliotecaTest {
     private BufferedReader bufferedReader;
     private Biblioteca biblioteca;
     private List<Book> books;
-    private Mocks mocks;
 
     @Before
     public void setUp() {
         printStream = mock(PrintStream.class);
         bufferedReader = mock(BufferedReader.class);
         books = new ArrayList<Book>();
-        books.add(new Book("Book Title 1", "0000", "Author 1"));
-        books.add(new Book("Book Title 2", "0000", "Author 2"));
-        books.add(new Book("Book Title 3", "0000", "Author 3"));
+        books.add(new Book("Book Title 1", "0000", "Author 1", "not reserved"));
+        books.add(new Book("Book Title 2", "0000", "Author 2", "not reserved"));
+        books.add(new Book("Book Title 3", "0000", "Author 3", "not reserved"));
         biblioteca = new Biblioteca(printStream, books, bufferedReader);
-        mocks = new Mocks();
+        biblioteca.factory();
     }
 
     @Test
     public void shouldPrintAWelcomeMessageWhenApplicationStarts() {
-        String expectedMessage = mocks.expectedMessage;
+        String expectedMessage = Mocks.expectedMessage;
         biblioteca.welcomeMessage();
         verify(printStream).println(expectedMessage);
     }
@@ -50,19 +48,30 @@ public class BibliotecaTest {
 
     @Test
     public void shouldPrintAListOfBooksWhenOptionOneIsChosenFromMenu() {
-        String expectedListOfBooks = mocks.expectedListOfBooks;
-        biblioteca.factory();
-        biblioteca.optionHandler( "1");
+        String expectedListOfBooks = Mocks.expectedListOfBooks;
+        biblioteca.optionHandler("1");
         verify(printStream).println(expectedListOfBooks);
     }
 
     @Test
     public void shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu() {
-        String expectedInvalidOptionMessage = mocks.expectedInvalidOptionMessage;
-        String invalidOption = mocks.invalidOption;
-        biblioteca.factory();
+        String expectedInvalidOptionMessage = Mocks.expectedInvalidOptionMessage;
+        String invalidOption = Mocks.invalidOption;
         biblioteca.optionHandler(invalidOption);
         verify(printStream).println(expectedInvalidOptionMessage);
+    }
+
+    @Test
+    public void shouldCheckoutABookWhenOptionTwoIsChosenFromMenu() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 1");
+        Book book = null;
+        for (Book b : books) {
+            if (b.getTitle().equals("Book Title 1")) {
+                book = b;
+            }
+        }
+        biblioteca.optionHandler("2");
+        assertThat(book.getStatus(), is("reserved"));
     }
 }
 
