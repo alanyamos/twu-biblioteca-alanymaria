@@ -65,7 +65,7 @@ public class Biblioteca {
         String listOfBooks =  "";
 
         for (Book book : books) {
-            if (book.getStatus() !=  Constants.reserved) {
+            if (isBookAvailable(book)) {
                 listOfBooks += "Title: " + book.getTitle() + "\nAuthor: " + book.getAuthor() + "\nYear published: " + book.getYearPublished() + "\n--------------------\n\n";
             }
         }
@@ -76,10 +76,17 @@ public class Biblioteca {
     private void checkoutBook () {
         printStream.println("Which book do you want to checkout?");
         String bookTitle = readLine();
+        boolean failedCheckout = true;
         for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle))) {
+            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isBookAvailable(book)) {
                 book.setStatus("reserved");
+                failedCheckout = false;
+                printStream.println("Thank you! Enjoy the book\n");
             }
+        }
+
+        if (failedCheckout) {
+            printStream.println("Sorry, that book is not available\n");
         }
     }
 
@@ -97,7 +104,11 @@ public class Biblioteca {
         return option;
     }
 
-    public static String removeAccents(String str) {
+    private String removeAccents(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
+    }
+
+    private boolean isBookAvailable(Book book) {
+        return book.getStatus().equals(Constants.notReserved);
     }
 }

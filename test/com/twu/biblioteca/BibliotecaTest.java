@@ -62,7 +62,7 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldCheckoutABookWhenOptionTwoIsChosenFromMenu() throws IOException {
+    public void shouldCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsAvailable() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 1");
         Book book = null;
         for (Book b : books) {
@@ -73,5 +73,23 @@ public class BibliotecaTest {
         biblioteca.optionHandler("2");
         assertThat(book.getStatus(), is("reserved"));
     }
-}
 
+    @Test
+    public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndTheBookIsNotAvailable() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 1");
+        for (Book book : books) {
+            if (book.getTitle().equals("Book Title 1")) {
+                book.setStatus("reserved");
+            }
+        }
+        biblioteca.optionHandler("2");
+        verify(printStream).println("Sorry, that book is not available\n");
+    }
+
+    @Test
+    public void shouldNotCheckoutABookWhenOptionTwoIsChosenFromMenuAndThereIsASpeelingError() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Book Title 4");
+        biblioteca.optionHandler("2");
+        verify(printStream).println("Sorry, that book is not available\n");
+    }
+}

@@ -5,5 +5,5 @@ public class Constants {
     static final String menu = "Enter one of the options below:\n\n1 - List Books\n2 - Checkout\n3 - Exit";
     static final String invalidOptionMessage = "Please select a valid option!\n";
     static final String exitOption =  "3";
-    static final String reserved = "reserved";
+    static final String notReserved = "not reserved";
 }
