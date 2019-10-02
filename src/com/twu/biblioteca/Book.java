@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-public class Book {
+public class Book implements IsAvailable {
     private String title;
     private String yearPublished;
     private String author;

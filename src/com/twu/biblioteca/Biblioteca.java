@@ -17,11 +17,13 @@ public class Biblioteca {
     private PrintStream printStream;
     private BufferedReader bufferedReader;
     private List<Book> books;
+    private List<Movie> movies;
     private Map<String, Command> options = new HashMap<String, Command>();
 
-    public Biblioteca(PrintStream printStream, List<Book> books, BufferedReader bufferedReader) {
+    public Biblioteca(PrintStream printStream, List<Book> books, List<Movie> movies, BufferedReader bufferedReader) {
         this.printStream = printStream;
         this.books = books;
+        this.movies = movies;
         this.bufferedReader = bufferedReader;
     }
 
@@ -51,6 +53,10 @@ public class Biblioteca {
         });
 
         options.put("4", new Command() {
+            public void runCommand() { listMovies(); };
+        });
+
+        options.put("5", new Command() {
             public void runCommand() { exit(); };
         });
     }
@@ -69,7 +75,7 @@ public class Biblioteca {
         String listOfBooks =  "";
 
         for (Book book : books) {
-            if (isBookAvailable(book)) {
+            if (isAvailable(book)) {
                 listOfBooks += "Title: " + book.getTitle() + "\nAuthor: " + book.getAuthor() + "\nYear published: " + book.getYearPublished() + "\n--------------------\n\n";
             }
         }
@@ -83,7 +89,7 @@ public class Biblioteca {
         boolean failedCheckout = true;
 
         for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isBookAvailable(book)) {
+            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isAvailable(book)) {
                 book.setStatus("reserved");
                 failedCheckout = false;
                 printStream.println("Thank you! Enjoy the book.\n");
@@ -101,7 +107,7 @@ public class Biblioteca {
         boolean failedReturn = true;
 
         for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && !isBookAvailable(book)) {
+            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && !isAvailable(book)) {
                 book.setStatus("not reserved");
                 failedReturn = false;
                 printStream.println("Thank you for returning the book.\n");
@@ -111,6 +117,18 @@ public class Biblioteca {
         if (failedReturn) {
             printStream.println("That is not a valid book to return.\n");
         }
+    }
+
+    private void listMovies() {
+        String listOfMovies =  "";
+
+        for (Movie movie : movies) {
+            if (isAvailable(movie)) {
+                listOfMovies += "Title: " + movie.getTitle() + "\nDirector: " + movie.getDirector() + "\nYear: " + movie.getYear() + "\nRating: " + movie.getRating() + "\n--------------------\n\n";
+            }
+        }
+
+        printStream.println(listOfMovies);
     }
 
     private void exit() {
@@ -132,7 +150,7 @@ public class Biblioteca {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
     }
 
-    private boolean isBookAvailable(Book book) {
-        return book.getStatus().equals(Constants.notReserved);
+    private boolean isAvailable(IsAvailable content) {
+        return content.getStatus().equals(Constants.notReserved);
     }
 }
