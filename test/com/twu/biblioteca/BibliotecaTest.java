@@ -55,18 +55,18 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldPrintAListOfAvailableBooksWhenOptionOneIsChosenFromMenu() {
-        String expectedListOfBooks = Mocks.expectedListOfBooks;
-        biblioteca.optionHandler("1");
-        verify(printStream).println(expectedListOfBooks);
-    }
-
-    @Test
     public void shouldPrintAWarningMessageWhenAInvalidOptionIsChosenFromMenu() {
         String expectedInvalidOptionMessage = Mocks.expectedInvalidOptionMessage;
         String invalidOption = Mocks.invalidOption;
         biblioteca.optionHandler(invalidOption);
         verify(printStream).println(expectedInvalidOptionMessage);
+    }
+
+    @Test
+    public void shouldPrintAListOfAvailableBooksWhenOptionOneIsChosenFromMenu() {
+        String expectedListOfBooks = Mocks.expectedListOfBooks;
+        biblioteca.optionHandler("1");
+        verify(printStream).println(expectedListOfBooks);
     }
 
     @Test
@@ -118,5 +118,27 @@ public class BibliotecaTest {
         String expectedListOfMovies = Mocks.expectedListOfMovies;
         biblioteca.optionHandler("4");
         verify(printStream).println(expectedListOfMovies);
+    }
+
+    @Test
+    public void shouldCheckoutAMovieWhenOptionFiveIsChosenFromMenuAndTheMovieIsAvailable() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Movie Title 1");
+        Movie movie = movies.stream().filter(b -> b.getTitle().equals("Movie Title 1")).findFirst().get();
+        biblioteca.optionHandler("5");
+        assertThat(movie.getStatus(), is("reserved"));
+    }
+
+    @Test
+    public void shouldNotCheckoutAMovieWhenOptionFiveIsChosenFromMenuAndTheMovieIsNotAvailable() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Movie Title 2");
+        biblioteca.optionHandler("5");
+        verify(printStream).println("Sorry, that movie is not available.\n");
+    }
+
+    @Test
+    public void shouldNotCheckoutAMovieWhenOptionFiveIsChosenFromMenuAndThereIsASpellingError() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Movie Title 4");
+        biblioteca.optionHandler("5");
+        verify(printStream).println("Sorry, that movie is not available.\n");
     }
 }

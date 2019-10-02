@@ -57,6 +57,10 @@ public class Biblioteca {
         });
 
         options.put("5", new Command() {
+            public void runCommand() { checkoutMovie(); };
+        });
+
+        options.put("6", new Command() {
             public void runCommand() { exit(); };
         });
     }
@@ -129,6 +133,24 @@ public class Biblioteca {
         }
 
         printStream.println(listOfMovies);
+    }
+
+    private void checkoutMovie() {
+        printStream.println("Which movie do you want to checkout?");
+        String movieTitle = readLine();
+        boolean failedCheckout = true;
+
+        for (Movie movie : movies) {
+            if (removeAccents(movie.getTitle()).equals(removeAccents(movieTitle)) && isAvailable(movie)) {
+                movie.setStatus("reserved");
+                failedCheckout = false;
+                printStream.println("Thank you! Enjoy the movie.\n");
+            }
+        }
+
+        if (failedCheckout) {
+            printStream.println("Sorry, that movie is not available.\n");
+        }
     }
 
     private void exit() {
