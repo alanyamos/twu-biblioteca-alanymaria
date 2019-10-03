@@ -5,7 +5,9 @@ import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.service.MovieService;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -159,5 +161,21 @@ public class BibliotecaTest {
         when(bufferedReader.readLine()).thenReturn("Movie Title 4");
         biblioteca.optionHandler("5");
         verify(printStream).println("Sorry, that movie is not available.\n");
+    }
+
+    @Test
+    public void shouldNotLeaveTheAppWhileOptionSixIsNotChosenFromMenu() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("1");
+        biblioteca.displayMenu();
+        verify(printStream).println("Enter one of the options below:\n\n1 - List Books\n2 - Checkout a Book\n3 - Return a Book\n4 - List Movies\n5 - Checkout a Movie\n6 - Exit");
+    }
+
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
+
+    @Test
+    public void shouldLeaveTheAppWhenOptionSixIsNotChosenFromMenu() {
+        biblioteca.optionHandler("6");
+        exit.expectSystemExitWithStatus(0);
     }
 }
