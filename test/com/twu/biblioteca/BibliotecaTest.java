@@ -1,5 +1,9 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.service.BookService;
+import com.twu.biblioteca.service.MovieService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertThat;
@@ -17,26 +22,40 @@ public class BibliotecaTest {
 
     private PrintStream printStream;
     private BufferedReader bufferedReader;
-    private Biblioteca biblioteca;
+    private BookService bookService;
     private List<Book> books;
+    private MovieService movieService;
     private List<Movie> movies;
+    private Biblioteca biblioteca;
 
     @Before
     public void setUp() {
         printStream = mock(PrintStream.class);
         bufferedReader = mock(BufferedReader.class);
 
-        books = new ArrayList<Book>();
-        books.add(new Book("Book Title 1", "0000", "Author 1", "not reserved"));
-        books.add(new Book("Book Title 2", "0000", "Author 2", "reserved"));
-        books.add(new Book("Book Title 3", "0000", "Author 3", "not reserved"));
+        books = new ArrayList<Book>(
+            Arrays.asList(
+                new Book("Book Title 1", "0000", "Author 1", "not reserved"),
+                new Book("Book Title 2", "0000", "Author 2", "reserved"),
+                new Book("Book Title 3", "0000", "Author 3", "not reserved")
+            )
+        );
 
-        movies = new ArrayList<Movie>();
-        movies.add(new Movie("Movie Title 1", "0000", "Director 1", "0", "not reserved"));
-        movies.add(new Movie("Movie Title 2", "0000", "Director 2", "0","reserved"));
-        movies.add(new Movie("Movie Title 3", "0000", "Director 3", "0", "not reserved"));
+        bookService = new BookService();
+        bookService.setBooks(books);
 
-        biblioteca = new Biblioteca(printStream, books, movies, bufferedReader);
+        movies = new ArrayList<Movie>(
+                Arrays.asList(
+                    new Movie("Movie Title 1", "0000", "Director 1", "0", "not reserved"),
+                    new Movie("Movie Title 2", "0000", "Director 2", "0","reserved"),
+                    new Movie("Movie Title 3", "0000", "Director 3", "0", "not reserved")
+                )
+        );
+
+        movieService = new MovieService();
+        movieService.setMovies(movies);
+
+        biblioteca = new Biblioteca(printStream, bufferedReader, bookService, movieService);
         biblioteca.factory();
     }
 
@@ -107,7 +126,7 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldNotCheckoutABookWhenOptionThreeIsChosenFromMenuAndThereIsASpellingError() throws IOException {
+    public void shouldNotReturnABookWhenOptionThreeIsChosenFromMenuAndThereIsASpellingError() throws IOException {
         when(bufferedReader.readLine()).thenReturn("Book Title 4");
         biblioteca.optionHandler("3");
         verify(printStream).println("That is not a valid book to return.\n");

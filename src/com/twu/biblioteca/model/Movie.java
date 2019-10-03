@@ -1,4 +1,6 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.model;
+
+import com.twu.biblioteca.IsAvailable;
 
 public class Movie implements IsAvailable {
     private String title;

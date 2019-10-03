@@ -1,9 +1,13 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.service.BookService;
+import com.twu.biblioteca.service.MovieService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +20,15 @@ public class Biblioteca {
 
     private PrintStream printStream;
     private BufferedReader bufferedReader;
-    private List<Book> books;
-    private List<Movie> movies;
+    private BookService bookService;
+    private MovieService movieService;
     private Map<String, Command> options = new HashMap<String, Command>();
 
-    public Biblioteca(PrintStream printStream, List<Book> books, List<Movie> movies, BufferedReader bufferedReader) {
+    public Biblioteca(PrintStream printStream, BufferedReader bufferedReader, BookService bookService, MovieService movieService) {
         this.printStream = printStream;
-        this.books = books;
-        this.movies = movies;
         this.bufferedReader = bufferedReader;
+        this.bookService = bookService;
+        this.movieService = movieService;
     }
 
     public void welcomeMessage() {
@@ -74,12 +78,12 @@ public class Biblioteca {
         }
     }
 
-
     private void listBooks() {
         String listOfBooks =  "";
+        List<Book> books = bookService.listAll();
 
         for (Book book : books) {
-            if (isAvailable(book)) {
+            if (Utils.isAvailable(book, "reserved")) {
                 listOfBooks += "Title: " + book.getTitle() + "\nAuthor: " + book.getAuthor() + "\nYear published: " + book.getYearPublished() + "\n--------------------\n\n";
             }
         }
@@ -90,17 +94,10 @@ public class Biblioteca {
     private void checkoutBook () {
         printStream.println("Which book do you want to checkout?");
         String bookTitle = readLine();
-        boolean failedCheckout = true;
-
-        for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && isAvailable(book)) {
-                book.setStatus("reserved");
-                failedCheckout = false;
-                printStream.println("Thank you! Enjoy the book.\n");
-            }
-        }
-
-        if (failedCheckout) {
+        try {
+            bookService.update(bookTitle, "reserved");
+            printStream.println("Thank you! Enjoy the book.\n");
+        } catch (UpdateException error) {
             printStream.println("Sorry, that book is not available.\n");
         }
     }
@@ -108,26 +105,20 @@ public class Biblioteca {
     private void returnBook() {
         printStream.println("Which book do you want to return?");
         String bookTitle = readLine();
-        boolean failedReturn = true;
-
-        for (Book book : books) {
-            if (removeAccents(book.getTitle()).equals(removeAccents(bookTitle)) && !isAvailable(book)) {
-                book.setStatus("not reserved");
-                failedReturn = false;
-                printStream.println("Thank you for returning the book.\n");
-            }
-        }
-
-        if (failedReturn) {
+        try {
+            bookService.update(bookTitle, "not reserved");
+            printStream.println("Thank you for returning the book.\n");
+        } catch (UpdateException error) {
             printStream.println("That is not a valid book to return.\n");
         }
     }
 
     private void listMovies() {
         String listOfMovies =  "";
+        List<Movie> movies = movieService.listAll();
 
         for (Movie movie : movies) {
-            if (isAvailable(movie)) {
+            if (Utils.isAvailable(movie, "reserved")) {
                 listOfMovies += "Title: " + movie.getTitle() + "\nDirector: " + movie.getDirector() + "\nYear: " + movie.getYear() + "\nRating: " + movie.getRating() + "\n--------------------\n\n";
             }
         }
@@ -138,17 +129,11 @@ public class Biblioteca {
     private void checkoutMovie() {
         printStream.println("Which movie do you want to checkout?");
         String movieTitle = readLine();
-        boolean failedCheckout = true;
 
-        for (Movie movie : movies) {
-            if (removeAccents(movie.getTitle()).equals(removeAccents(movieTitle)) && isAvailable(movie)) {
-                movie.setStatus("reserved");
-                failedCheckout = false;
-                printStream.println("Thank you! Enjoy the movie.\n");
-            }
-        }
-
-        if (failedCheckout) {
+        try {
+            movieService.update(movieTitle, "reserved");
+            printStream.println("Thank you! Enjoy the movie.\n");
+        } catch (UpdateException error) {
             printStream.println("Sorry, that movie is not available.\n");
         }
     }
@@ -168,11 +153,4 @@ public class Biblioteca {
         return option;
     }
 
-    private String removeAccents(String str) {
-        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
-    }
-
-    private boolean isAvailable(IsAvailable content) {
-        return content.getStatus().equals(Constants.notReserved);
-    }
 }
