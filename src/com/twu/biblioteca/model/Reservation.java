@@ -1,11 +1,11 @@
 package com.twu.biblioteca.model;
 
-public class Booking {
+public class Reservation {
     private Integer user;
     private Integer book;
     private Integer movie;
 
-    public Booking(Integer user, Integer book, Integer movie) {
+    public Reservation(Integer user, Integer book, Integer movie) {
         this.user = user;
         this.book = book;
         this.movie = movie;

@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.model.Booking;
+import com.twu.biblioteca.model.Reservation;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.User;
 import com.twu.biblioteca.service.BookService;
@@ -27,7 +27,7 @@ public class Biblioteca {
     private BookService bookService;
     private MovieService movieService;
     private UserService userService;
-    private List<Booking> bookings = new ArrayList<Booking>();
+    private List<Reservation> reservations = new ArrayList<Reservation>();
     private Map<String, Command> options = new HashMap<String, Command>();
 
     public Biblioteca(PrintStream printStream, BufferedReader bufferedReader, BookService bookService, MovieService movieService, UserService userService) {
@@ -130,8 +130,8 @@ public class Biblioteca {
             User user = userService.getLoggedUser();
             bookService.checkoutBook(bookTitle, "reserved");
             Book book = bookService.getByTitle(bookTitle);
-            Booking booking = new Booking(user.getId(), book.getId(), null);
-            addBooking(booking);
+            Reservation reservation = new Reservation(user.getId(), book.getId(), null);
+            addBooking(reservation);
             printStream.println("Thank you! Enjoy the book.\n");
         } catch (Exception error) {
             printStream.println(error.getMessage());
@@ -146,8 +146,8 @@ public class Biblioteca {
             User user = userService.getLoggedUser();
             bookService.returnBook(bookTitle, "not reserved");
             Book book = bookService.getByTitle(bookTitle);
-            Booking booking = new Booking(user.getId(), book.getId(), null);
-            removeBooking(booking);
+            Reservation reservation = new Reservation(user.getId(), book.getId(), null);
+            removeBooking(reservation);
             printStream.println("Thank you for returning the book!\n");
         } catch (Exception error) {
             printStream.println(error.getMessage());
@@ -175,8 +175,8 @@ public class Biblioteca {
             User user = userService.getLoggedUser();
             movieService.checkoutMovie(movieTitle, "reserved");
             Movie movie = movieService.getByTitle(movieTitle);
-            Booking booking = new Booking(user.getId(), null, movie.getId());
-            addBooking(booking);
+            Reservation reservation = new Reservation(user.getId(), null, movie.getId());
+            addBooking(reservation);
             printStream.println("Thank you! Enjoy the movie.\n");
         } catch (Exception error) {
             printStream.println(error.getMessage());
@@ -192,11 +192,11 @@ public class Biblioteca {
     private void listReservations() {
         String listOfReservations =  "";
 
-        for (Booking booking : bookings) {
-            String bookTitle = bookService.getBookById(booking.getBook());
-            String movieTitle = movieService.getMovieById(booking.getMovie());
+        for (Reservation reservation : reservations) {
+            String bookTitle = bookService.getBookById(reservation.getBook());
+            String movieTitle = movieService.getMovieById(reservation.getMovie());
             String content = bookTitle + "\n" + movieTitle;
-            String user = userService.getUserById(booking.getUser());
+            String user = userService.getUserById(reservation.getUser());
             listOfReservations += "Owner: " + user + "\nTitle: " + content + "\n--------------------\n\n";
         }
 
@@ -207,12 +207,12 @@ public class Biblioteca {
         System.exit(0);
     }
 
-    private void addBooking(Booking booking) {
-        bookings.add(booking);
+    private void addBooking(Reservation reservation) {
+        reservations.add(reservation);
     }
 
-    private void removeBooking(Booking booking) {
-        bookings.remove(booking);
+    private void removeBooking(Reservation reservation) {
+        reservations.remove(reservation);
     }
 
     private String readLine() {

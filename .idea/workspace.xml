@@ -4,10 +4,7 @@
     <list default="true" id="159868b1-626b-4542-bfe7-726eaffb0565" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/Biblioteca.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/Biblioteca.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/twu/biblioteca/Mocks.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/twu/biblioteca/Mocks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/model/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/model/Reservation.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -164,8 +161,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.BibliotecaApp" />
-        <item itemvalue="JUnit.BibliotecaTest.shouldShowUserProfileWhenOptionSixIsChosenFromMenu" />
         <item itemvalue="JUnit.BibliotecaTest" />
+        <item itemvalue="JUnit.BibliotecaTest.shouldShowUserProfileWhenOptionSixIsChosenFromMenu" />
         <item itemvalue="JUnit.BibliotecaTest.shouldPrintAListOfReservationsWhenOptionSixIsChosenFromMenu" />
         <item itemvalue="JUnit.BibliotecaTest.shouldNotCheckoutAMovieWhenOptionFiveIsChosenFromMenuAndThereIsASpellingError" />
       </list>
