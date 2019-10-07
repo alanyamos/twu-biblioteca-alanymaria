@@ -63,9 +63,9 @@ public class BibliotecaTest {
 
         users = new ArrayList<User>(
             Arrays.asList(
-                new User(1, "User 1", "111-1111", "111111", "logged"),
-                new User(2, "User 2", "222-2222", "222222", "logged"),
-                new User(3, "User 3", "333-3333", "333333", "unlogged")
+                new User(1, "User 1", "user1@email.com","0000000","111-1111", "111111", "unlogged"),
+                new User(2, "User 2", "user2@email.com","0000000", "222-2222", "222222", "unlogged"),
+                new User(3, "User 3", "user3@email.com","0000000", "333-3333", "333333", "logged")
             )
         );
 
@@ -198,6 +198,13 @@ public class BibliotecaTest {
         when(bufferedReader.readLine()).thenReturn("Movie Title 4");
         biblioteca.optionHandler("5");
         verify(printStream).println("Sorry, that movie is not available.\n");
+    }
+
+    @Test
+    public void shouldShowUserProfileWhenOptionSixIsChosenFromMenu() {
+        String expectedInfo = Mocks.expectedInfo;
+        biblioteca.optionHandler("6");
+        verify(printStream).println(expectedInfo);
     }
 
     @Rule

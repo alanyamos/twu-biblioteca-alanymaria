@@ -93,7 +93,7 @@ public class Biblioteca {
         });
 
         options.put("6", new Command() {
-            public void runCommand() { listReservations(); };
+            public void runCommand() { showProfile(); };
         });
 
         options.put("7", new Command() {
@@ -181,6 +181,12 @@ public class Biblioteca {
         } catch (Exception error) {
             printStream.println(error.getMessage());
         }
+    }
+
+    private void showProfile() {
+        User user = userService.getLoggedUser();
+        String profile = "Name: " + user.getName() + "\nEmail: " + user.getEmail() + "\nPhone: " + user.getPhoneNumber() + "\n\n";
+        printStream.println(profile);
     }
 
     private void listReservations() {
