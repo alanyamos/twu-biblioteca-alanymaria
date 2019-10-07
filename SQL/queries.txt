@@ -1,0 +1,89 @@
+Q1
+
+Query:
+
+SELECT member.name
+FROM book, member, checkout_item
+WHERE book.id=checkout_item.book_id AND
+	     member.id=checkout_item.member_id AND
+	     book.title="The Hobbit";
+
+
+Result: Anand Beck
+
+
+
+Q2
+
+Query:
+
+SELECT COUNT(member.id) FROM member
+WHERE member.id NOT IN(
+	SELECT member_id FROM checkout_item
+);
+
+Result: 37
+
+
+
+Q3
+
+Query:
+
+SELECT book.title FROM book
+WHERE book.id NOT IN(
+	SELECT book_id FROM checkout_item
+	WHRE book_id IS NOT NULL
+)
+UNION
+SELECT movie.title FROM movie
+WHERE movie.id NOT IN(
+	SELECT movie_id FROM checkout_item
+	WHRE movie_id IS NOT NULL
+);
+
+Result: 
+
+1984
+Catcher in the Rye
+Crouching Tiger, Hidden Dragon
+Domain Driven Design
+Fellowship of the Ring
+Lawrence of Arabia
+Office Space
+Thin Red Line
+To Kill a Mockingbird
+Tom Sawyer
+
+
+
+Q4
+
+Query:
+
+INSERT INTO book (title) VALUES ("The Pragmatic Programmer");
+
+INSERT INTO member (name) VALUES ("Maria Silva");
+
+INSERT INTO checkout_item (member_id, book_id) VALUES (
+    (SELECT member.id FROM member WHERE name="Maria Silva"),
+    (SELECT book.id FROM book WHERE title="The Pragmatic Programmer")
+);
+
+
+
+Q5
+
+Query:
+
+SELECT name FROM member WHERE id IN(
+    SELECT member_id
+    FROM checkout_item
+    GROUP BY member_id
+    HAVING COUNT(member_id) > 1
+);
+
+Result:
+
+Anand Beck
+Frank Smith

@@ -13,3 +13,9 @@ Project carried out for the TWU pre-course.
 After run BibliotecaApp to be able to do the login use the number and password below:
 * Numer: `123-4567`
 * Password: `123456`
+
+## SQL Queries
+
+The queries requested in the SQL exercise are within the folder of the same name. 
+The `queries.txt` file has all the queries as well as the answers.
+
