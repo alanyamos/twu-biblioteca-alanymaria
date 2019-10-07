@@ -2,8 +2,10 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.model.User;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.service.MovieService;
+import com.twu.biblioteca.service.UserService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +30,8 @@ public class BibliotecaTest {
     private List<Book> books;
     private MovieService movieService;
     private List<Movie> movies;
+    private UserService userService;
+    private List<User> users;
     private Biblioteca biblioteca;
 
     @Before
@@ -37,9 +41,9 @@ public class BibliotecaTest {
 
         books = new ArrayList<Book>(
             Arrays.asList(
-                new Book("Book Title 1", "0000", "Author 1", "not reserved"),
-                new Book("Book Title 2", "0000", "Author 2", "reserved"),
-                new Book("Book Title 3", "0000", "Author 3", "not reserved")
+                new Book(0, "Book Title 1", "0000", "Author 1", "not reserved"),
+                new Book(1, "Book Title 2", "0000", "Author 2", "reserved"),
+                new Book(2, "Book Title 3", "0000", "Author 3", "not reserved")
             )
         );
 
@@ -47,17 +51,28 @@ public class BibliotecaTest {
         bookService.setBooks(books);
 
         movies = new ArrayList<Movie>(
-                Arrays.asList(
-                    new Movie("Movie Title 1", "0000", "Director 1", "0", "not reserved"),
-                    new Movie("Movie Title 2", "0000", "Director 2", "0","reserved"),
-                    new Movie("Movie Title 3", "0000", "Director 3", "0", "not reserved")
-                )
+            Arrays.asList(
+                new Movie(0, "Movie Title 1", "0000", "Director 1", "0", "not reserved"),
+                new Movie(1, "Movie Title 2", "0000", "Director 2", "0","reserved"),
+                new Movie(2, "Movie Title 3", "0000", "Director 3", "0", "not reserved")
+            )
         );
 
         movieService = new MovieService();
         movieService.setMovies(movies);
 
-        biblioteca = new Biblioteca(printStream, bufferedReader, bookService, movieService);
+        users = new ArrayList<User>(
+            Arrays.asList(
+                new User(1, "User 1", "111-1111", "111111", "logged"),
+                new User(2, "User 2", "222-2222", "222222", "logged"),
+                new User(3, "User 3", "333-3333", "333333", "unlogged")
+            )
+        );
+
+        userService = new UserService();
+        userService.setUsers(users);
+
+        biblioteca = new Biblioteca(printStream, bufferedReader, bookService, movieService, userService);
         biblioteca.factory();
     }
 
@@ -66,6 +81,28 @@ public class BibliotecaTest {
         String expectedMessage = Mocks.expectedMessage;
         biblioteca.welcomeMessage();
         verify(printStream).println(expectedMessage);
+    }
+
+    @Test
+    public void shouldLoginWhenPasswordAndNumberAreCorrects() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("333-3333", "333333");
+        User user = users.get(2);
+        biblioteca.login();
+        assertThat(user.getStatus(), is("logged"));
+    }
+
+    @Test
+    public void shouldNotLoginWhenPasswordIsWrong() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("111-1111", "111110");
+        biblioteca.login();
+        verify(printStream).println("Invalid number or password. Please, try again!\n");
+    }
+
+    @Test
+    public void shouldNotLoginWhenNumberIsWrong() throws IOException {
+        when(bufferedReader.readLine()).thenReturn("Movie Title 1", "111-1110", "111111");
+        biblioteca.login();
+        verify(printStream).println("Invalid number or password. Please, try again!\n");
     }
 
     @Test
@@ -163,19 +200,12 @@ public class BibliotecaTest {
         verify(printStream).println("Sorry, that movie is not available.\n");
     }
 
-    @Test
-    public void shouldNotLeaveTheAppWhileOptionSixIsNotChosenFromMenu() throws IOException {
-        when(bufferedReader.readLine()).thenReturn("1");
-        biblioteca.displayMenu();
-        verify(printStream).println("Enter one of the options below:\n\n1 - List Books\n2 - Checkout a Book\n3 - Return a Book\n4 - List Movies\n5 - Checkout a Movie\n6 - Exit");
-    }
-
     @Rule
     public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
     @Test
-    public void shouldLeaveTheAppWhenOptionSixIsNotChosenFromMenu() {
-        biblioteca.optionHandler("6");
+    public void shouldLeaveTheAppWhenOptionSevenIsChosenFromMenu() {
+        biblioteca.optionHandler("7");
         exit.expectSystemExitWithStatus(0);
     }
 }
